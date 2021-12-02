@@ -16,13 +16,13 @@ body{
 .start{
     padding: 5px 10px;
 }
-.container{
+#container{
     display: flex;
     justify-content: center;
     align-items: center;
     padding:25px;
 }
-.grid{
+#grid{
     display:flex;
     flex-direction: column;
 }
@@ -31,7 +31,11 @@ body{
     
 }
 .cell{
-    border: solid 1px black;
+    outline: solid 1px black;
     height:100px;
     width:100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
 }

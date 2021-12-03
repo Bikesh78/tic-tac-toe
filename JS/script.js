@@ -18,7 +18,7 @@ const PlayerTwo = function(boardIndex){
 
 
 let counter = 1;
-const playerMove = function(){
+const playGame = function(){
     let clickedGrid = document.querySelector('#grid');
     clickedCell = clickedGrid.childNodes;
     clickedCell.forEach(clicked => {
@@ -36,11 +36,40 @@ const playerMove = function(){
                 }
                 counter++;
                 displayGame();
+                if(counter > 5){
+                    checkGameState();
+                }
+                if(counter > 9){
+                    alert('Game is tied');
+                }
             }            
         });
         
     });
 }
+const checkGameState = () =>{
+    if(gameboard[0].value === 'X' && gameboard[1].value === 'X' && gameboard[2].value === 'X'
+       ||  gameboard[3].value === 'X' && gameboard[4].value === 'X' && gameboard[5].value === 'X'
+       ||  gameboard[6].value === 'X' && gameboard[7].value === 'X' && gameboard[8].value === 'X'
+       ||  gameboard[0].value === 'X' && gameboard[3].value === 'X' && gameboard[6].value === 'X'
+       ||  gameboard[1].value === 'X' && gameboard[4].value === 'X' && gameboard[7].value === 'X'
+       ||  gameboard[2].value === 'X' && gameboard[5].value === 'X' && gameboard[8].value === 'X'
+       ||  gameboard[2].value === 'X' && gameboard[4].value === 'X' && gameboard[6].value === 'X'
+       ||  gameboard[0].value === 'X' && gameboard[4].value === 'X' && gameboard[8].value === 'X'
+        ){
+        alert('Player One Won');
+    } else if(gameboard[0].value === 'O' && gameboard[1].value === 'O' && gameboard[2].value === 'O'
+    ||  gameboard[3].value === 'O' && gameboard[4].value === 'O' && gameboard[5].value === 'O'
+    ||  gameboard[6].value === 'O' && gameboard[7].value === 'O' && gameboard[8].value === 'O'
+    ||  gameboard[0].value === 'O' && gameboard[3].value === 'O' && gameboard[6].value === 'O'
+    ||  gameboard[1].value === 'O' && gameboard[4].value === 'O' && gameboard[7].value === 'O'
+    ||  gameboard[2].value === 'O' && gameboard[5].value === 'O' && gameboard[8].value === 'O'
+    ||  gameboard[2].value === 'O' && gameboard[4].value === 'O' && gameboard[6].value === 'O'
+    ||  gameboard[0].value === 'O' && gameboard[4].value === 'O' && gameboard[8].value === 'O'
+     ){
+     alert('Player Two Won');
+ }
+};
 //display user's input
 const displayGame = function(){
     let cellValues = gameboard.filter(cellValue => cellValue.value != '');
@@ -49,11 +78,12 @@ const displayGame = function(){
         document.querySelector(`#${cellId}`).textContent = cell.value;
     });
 };
+
 return {
     // displayGame:displayGame,
-    playerMove: playerMove
+    playGame: playGame
 };
 })();
 
 // game.displayGame();
-game.playerMove();
+game.playGame();

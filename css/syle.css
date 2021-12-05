@@ -39,3 +39,23 @@ body{
     align-items: center;
     font-size: 50px;
 }
+.game-result{
+    display: none;
+    position:fixed;
+    z-index: 1;
+    width:20%;
+    height:20%;
+    background-color: green;
+    font-size:32px;
+    flex-direction: column;
+    gap:20px;
+    justify-content: center;
+    align-items: center;
+}
+.play-again{
+    display: block;
+    padding: 5px 15px;
+    text-align: center;
+    font-size: 16px;
+    margin: 0 auto;
+}

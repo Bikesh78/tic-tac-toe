@@ -43,8 +43,8 @@ body{
     display: none;
     position:fixed;
     z-index: 1;
-    width:20%;
-    height:20%;
+    width:50%;
+    height:50%;
     background-color: green;
     font-size:32px;
     flex-direction: column;

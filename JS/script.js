@@ -94,7 +94,7 @@ const displayResult = (winner) =>{
     gameStatus = 'over';
     let resultMsgBox = document.createElement('div');
     resultMsgBox.setAttribute('class','game-result');
-    resultMsgBox.style.display = 'flex';
+    setTimeout(function(){resultMsgBox.style.display = 'flex';},500);
     let resultMsg = document.createElement('p');
     resultMsgBox.appendChild(resultMsg);
     if(winner === 'playerOne'){
@@ -133,3 +133,4 @@ return {
 
 // game.displayGame();
 game.playGame();
+

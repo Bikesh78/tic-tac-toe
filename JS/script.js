@@ -104,7 +104,7 @@ const displayResult = (winner) =>{
     }else{
         resultMsg.textContent = 'It\'s A Tie';
     }
-    document.querySelector('#container').appendChild(resultMsgBox);
+    document.querySelector('#body').appendChild(resultMsgBox);
     let playAgainBtn = document.createElement('button');
     playAgainBtn.setAttribute('class','button play-again');
     playAgainBtn.textContent = 'Play Again'
@@ -135,15 +135,18 @@ return {
 // game.playGame();
 
 let startPage = (function(){
-    let container = document.querySelector('#container');
+    let body = document.querySelector('body');
     let grid = document.querySelector('#grid');
     grid.style.display = 'none';
+    let header = document.querySelector('.header');
+    header.style.display = 'none';
     let welcomePage = document.createElement('div');
     welcomePage.setAttribute('id','welcome-page');
-    container.appendChild(welcomePage);
-    let initialMessage = document.createElement('p');
-    initialMessage.textContent = 'Tic Tac Toe';
-    welcomePage.appendChild(initialMessage);
+    body.appendChild(welcomePage);
+    let welcomeMessage = document.createElement('p');
+    welcomeMessage.textContent = 'Tic Tac Toe';
+    welcomeMessage.setAttribute('class','welcome-message');
+    welcomePage.appendChild(welcomeMessage);
     let startBtn = document.createElement('button');
     startBtn.setAttribute('class','button start')
     startBtn.textContent = 'Start';
@@ -151,6 +154,7 @@ let startPage = (function(){
     startBtn.addEventListener('click',() => {
         welcomePage.style.display = 'none';
         grid.style.display = 'block';
+        header.style.display = 'block';
         game.playGame();
     });
 }

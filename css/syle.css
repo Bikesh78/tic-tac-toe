@@ -58,3 +58,12 @@ body{
     font-size: 16px;
     margin: 0 auto;
 }
+#welcome-page{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    font-size:32px;
+    margin:100px;
+}

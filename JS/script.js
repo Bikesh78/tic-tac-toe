@@ -139,7 +139,7 @@ let startPage = (function(){
     let grid = document.querySelector('#grid');
     grid.style.display = 'none';
     let welcomePage = document.createElement('div');
-    welcomePage.setAttribute('id','home-page');
+    welcomePage.setAttribute('id','welcome-page');
     container.appendChild(welcomePage);
     let initialMessage = document.createElement('p');
     initialMessage.textContent = 'Tic Tac Toe';

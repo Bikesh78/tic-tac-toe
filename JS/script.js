@@ -2,10 +2,14 @@ let game = (function(){
 const Gameboard = function(cellName,value){
     return {cellName,value};
 };
-let gameboard = [];
-for(let i =1; i <= 9;i++){
-    gameboard.push(Gameboard('cell' + i, ''));
+let gameboard;
+let createEmptyBoard = () => {
+    gameboard = [];
+    for(let i =1; i <= 9;i++){
+        gameboard.push(Gameboard('cell' + i, ''));
+    }
 }
+createEmptyBoard();
 
 const PlayerOne = function(boardIndex){
     gameboard[boardIndex].value = 'X';
@@ -16,7 +20,7 @@ const PlayerTwo = function(boardIndex){
     return {gameboard};
 }
 
-let ratio = 0;
+
 let gameStatus = 'not over';
 let counter = 1;
 const playGame = function(){
@@ -83,6 +87,7 @@ const displayGame = function(){
         let cellId = cell.cellName;
         document.querySelector(`#${cellId}`).textContent = cell.value;
     });
+    
 };
 
 const displayResult = (winner) =>{
@@ -104,9 +109,22 @@ const displayResult = (winner) =>{
     playAgainBtn.setAttribute('class','button play-again');
     playAgainBtn.textContent = 'Play Again'
     resultMsgBox.appendChild(playAgainBtn);
-    
+    playAgainBtn.addEventListener('click',(e)=> {
+        createEmptyBoard();
+        clearCells();
+        counter = 1;
+        gameStatus = 'not over';
+        resultMsgBox.style.display = 'none';
+    });
 };
 
+//clears 
+const clearCells = () => {
+    let emptyCells = document.querySelectorAll('.cell');
+    emptyCells.forEach(emptyCells =>{
+        emptyCells.textContent = '';
+    });
+};
 return {
     // displayGame:displayGame,
     playGame: playGame

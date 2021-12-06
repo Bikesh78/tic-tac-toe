@@ -98,9 +98,9 @@ const displayResult = (winner) =>{
     let resultMsg = document.createElement('p');
     resultMsgBox.appendChild(resultMsg);
     if(winner === 'playerOne'){
-        resultMsg.textContent = 'The Winner Is Player One';
+        resultMsg.textContent = 'Congratulations!!! Player One Won';
     }else if(winner === 'playerTwo'){
-        resultMsg.textContent = 'The Winner Is Player Two';
+        resultMsg.textContent = 'Congratulations!!! Player Two Won';
     }else{
         resultMsg.textContent = 'It\'s A Tie';
     }
@@ -118,7 +118,7 @@ const displayResult = (winner) =>{
     });
 };
 
-//clears 
+//clears textcontent of cells
 const clearCells = () => {
     let emptyCells = document.querySelectorAll('.cell');
     emptyCells.forEach(emptyCells =>{
@@ -132,5 +132,26 @@ return {
 })();
 
 // game.displayGame();
-game.playGame();
+// game.playGame();
 
+let startPage = (function(){
+    let container = document.querySelector('#container');
+    let grid = document.querySelector('#grid');
+    grid.style.display = 'none';
+    let welcomePage = document.createElement('div');
+    welcomePage.setAttribute('id','home-page');
+    container.appendChild(welcomePage);
+    let initialMessage = document.createElement('p');
+    initialMessage.textContent = 'Tic Tac Toe';
+    welcomePage.appendChild(initialMessage);
+    let startBtn = document.createElement('button');
+    startBtn.setAttribute('class','button start')
+    startBtn.textContent = 'Start';
+    welcomePage.appendChild(startBtn);
+    startBtn.addEventListener('click',() => {
+        welcomePage.style.display = 'none';
+        grid.style.display = 'block';
+        game.playGame();
+    });
+}
+)();

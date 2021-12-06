@@ -13,9 +13,7 @@ body{
     justify-content: space-between;
     padding: 20px;
 }
-.start{
-    padding: 5px 10px;
-}
+
 #container{
     display: flex;
     justify-content: center;
@@ -52,7 +50,8 @@ body{
     justify-content: center;
     align-items: center;
 }
-.play-again{
+.play-again,
+.start{
     display: block;
     padding: 5px 15px;
     text-align: center;

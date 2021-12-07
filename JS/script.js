@@ -104,7 +104,7 @@ const displayResult = (winner) =>{
     }else{
         resultMsg.textContent = 'It\'s A Tie';
     }
-    document.querySelector('#body').appendChild(resultMsgBox);
+    document.querySelector('#container').appendChild(resultMsgBox);
     let playAgainBtn = document.createElement('button');
     playAgainBtn.setAttribute('class','button play-again');
     playAgainBtn.textContent = 'Play Again'

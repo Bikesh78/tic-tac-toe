@@ -15,11 +15,11 @@ const board = (() =>{
     const getBoardArray= () => {
         return gameboard;
     };
-    const setValue = (boardIndex, currentPlayer) => {
+    const setValue = (boardIndex, _currentPlayer) => {
         //prevents setting value to an already filled cell
         if(gameboard[boardIndex].value != '') return;
         
-        gameboard[boardIndex].value = currentPlayer;
+        gameboard[boardIndex].value = _currentPlayer;
         return gameboard[boardIndex].value;
     };
 
@@ -44,7 +44,8 @@ const displayController =(() => {
     let resultMsgBox = document.createElement('div');
     let resultMsg = document.createElement('p');
     let playAgainBtn = document.createElement('button');
-    const createMsgBox = () =>{
+    
+    const _createMsgBox = () =>{
         
         resultMsgBox.setAttribute('class','game-result');
         setTimeout(function(){resultMsgBox.style.display = 'flex';},500);
@@ -62,7 +63,7 @@ const displayController =(() => {
     
     const displayResult = (winner) => {
         gameOver = true;
-        createMsgBox();
+        _createMsgBox();
         let resultMsg = document.querySelector('.result-message');
         if(winner === 'playerX'){
             resultMsg.textContent = 'Congratulations!!! Player X Won';
@@ -101,15 +102,15 @@ const gameFlow = (() =>{
                 clickedCellId = e.target.getAttribute('id'); //get the id of the clicked div
                 
                 let boardIndex = gameboard.findIndex(gameboard => gameboard.cellName == clickedCellId);
-                if(board.setValue(boardIndex, currentPlayer()) == undefined) return;
+                if(board.setValue(boardIndex, _currentPlayer()) == undefined) return;
                 displayController.displayMoves();
                 counter++;
-                checkGameState();
+                _checkGameState();
             });
         });
     };
 
-    const currentPlayer = () => {
+    const _currentPlayer = () => {
         if(counter % 2 !==0){
             return playerX;
         }else{
@@ -117,7 +118,7 @@ const gameFlow = (() =>{
         }
     };
 
-    const checkGameState= () => {
+    const _checkGameState= () => {
         if(gameboard[0].value === 'X' && gameboard[1].value === 'X' && gameboard[2].value === 'X'
         ||  gameboard[3].value === 'X' && gameboard[4].value === 'X' && gameboard[5].value === 'X'
         ||  gameboard[6].value === 'X' && gameboard[7].value === 'X' && gameboard[8].value === 'X'

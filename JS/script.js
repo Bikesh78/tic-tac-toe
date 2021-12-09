@@ -1,4 +1,3 @@
-
 const board = (() =>{
     let gameboard =[];
     const createEmptyGameboard= () => {
@@ -12,8 +11,7 @@ const board = (() =>{
         
         return gameboard;
     };
-    createEmptyGameboard();
-    console.log(gameboard);
+    
     const getBoardArray= () => {
         return gameboard;
     };
@@ -27,8 +25,6 @@ const board = (() =>{
 
     return {createEmptyGameboard, setValue,getBoardArray};
     })();
-
-board.createEmptyGameboard();
 
 const Player = (sign) =>{
     return {sign};
@@ -45,18 +41,47 @@ const displayController =(() => {
         });
 
     };
-    
-    // createMsgBox();
-    
-    // displayresult = () => {
-    //     checkgamestate()
-    //     get player
-    //     if player x wins show player x wins
+    let resultMsgBox = document.createElement('div');
+    let resultMsg = document.createElement('p');
+    let playAgainBtn = document.createElement('button');
+    const createMsgBox = () =>{
         
-    // };
+        resultMsgBox.setAttribute('class','game-result');
+        setTimeout(function(){resultMsgBox.style.display = 'flex';},500);
+        
+        resultMsg.setAttribute('class','result-message');
+        resultMsgBox.appendChild(resultMsg);
+        document.querySelector('#container').appendChild(resultMsgBox);
+
+        playAgainBtn.setAttribute('class','button play-again');
+        playAgainBtn.textContent = 'Play Again'
+        resultMsgBox.appendChild(playAgainBtn);
+        
+        gameFlow.playAgain(playAgainBtn,resultMsgBox);
+    };
     
-    // clearCells();
-    return {displayMoves};
+    const displayResult = (winner) => {
+        gameOver = true;
+        createMsgBox();
+        let resultMsg = document.querySelector('.result-message');
+        if(winner === 'playerX'){
+            resultMsg.textContent = 'Congratulations!!! Player X Won';
+        }else if(winner === 'playerO'){
+            resultMsg.textContent = 'Congratulations!!! Player O Won';
+        }else{
+            resultMsg.textContent = 'It\'s A Tie';
+        }
+           
+    };
+    
+    const clearCells = () => {
+        let emptyCells = document.querySelectorAll('.cell');
+        emptyCells.forEach(emptyCells =>{
+            emptyCells.textContent = '';
+        });
+    };
+
+    return {displayMoves,displayResult, clearCells};
     })();
 
 
@@ -65,14 +90,13 @@ const gameFlow = (() =>{
     let counter = 1;
     let playerX = Player('X').sign;
     let playerO = Player('O').sign;
-    let gameboard = board.getBoardArray();
-
-    const getBoardIndex = () =>{
+    let gameboard = board.createEmptyGameboard();
+    
+    const playGame = () =>{
         let grid = document.querySelector('#grid');
         clickedCell = grid.childNodes;
         clickedCell.forEach(clicked => {
             clicked.addEventListener('click',(e) =>{
-                
                 if(gameOver == true) return;
                 clickedCellId = e.target.getAttribute('id'); //get the id of the clicked div
                 
@@ -80,11 +104,11 @@ const gameFlow = (() =>{
                 if(board.setValue(boardIndex, currentPlayer()) == undefined) return;
                 displayController.displayMoves();
                 counter++;
-                console.log(counter);
-                console.log(currentPlayer());
+                checkGameState();
             });
         });
     };
+
     const currentPlayer = () => {
         if(counter % 2 !==0){
             return playerX;
@@ -93,149 +117,49 @@ const gameFlow = (() =>{
         }
     };
 
-    
-    return {getBoardIndex};
-})();
-
-gameFlow.getBoardIndex();
-
-
-
-/* let game = (function(){
-const Gameboard = function(cellName,value){
-    return {cellName,value};
-};
-let gameboard;
-let createEmptyBoard = () => {
-    gameboard = [];
-    for(let i =1; i <= 9;i++){
-        gameboard.push(Gameboard('cell' + i, ''));
-    }
-}
-createEmptyBoard();
-
-const PlayerOne = function(boardIndex){
-    gameboard[boardIndex].value = 'X';
-    return {gameboard};
-}
-const PlayerTwo = function(boardIndex){
-    gameboard[boardIndex].value = 'O';
-    return {gameboard};
-}
-
-
-let gameStatus = 'not over';
-let counter = 1;
-const playGame = function(){
-    let clickedGrid = document.querySelector('#grid');
-    clickedCell = clickedGrid.childNodes;
-    clickedCell.forEach(clicked => {
-        clicked.addEventListener('click',(e) =>{
-            if(gameStatus == 'not over'){
-                clickedCellId = e.target.getAttribute('id'); //get the id of the clicked div
-            }
+    const checkGameState= () => {
+        if(gameboard[0].value === 'X' && gameboard[1].value === 'X' && gameboard[2].value === 'X'
+        ||  gameboard[3].value === 'X' && gameboard[4].value === 'X' && gameboard[5].value === 'X'
+        ||  gameboard[6].value === 'X' && gameboard[7].value === 'X' && gameboard[8].value === 'X'
+        ||  gameboard[0].value === 'X' && gameboard[3].value === 'X' && gameboard[6].value === 'X'
+        ||  gameboard[1].value === 'X' && gameboard[4].value === 'X' && gameboard[7].value === 'X'
+        ||  gameboard[2].value === 'X' && gameboard[5].value === 'X' && gameboard[8].value === 'X'
+        ||  gameboard[2].value === 'X' && gameboard[4].value === 'X' && gameboard[6].value === 'X'
+        ||  gameboard[0].value === 'X' && gameboard[4].value === 'X' && gameboard[8].value === 'X'
+         ){
+            displayController.displayResult('playerX');
             
-            gameboardIndex = gameboard.findIndex(gameboard => gameboard.cellName === clickedCellId); //find index nuber of the array whose cellName matches with the id name of the div
-            
-            //only accepts input when the cell is empty
-            if(gameboard[gameboardIndex].value == ''){
-                if(counter % 2 !==0){
-                    PlayerOne(gameboardIndex);
-                }else{
-                    PlayerTwo(gameboardIndex);
-                }
-                counter++;
-                displayGame();                //if counter is odd player one's turn else player two's turn
-
-                if(counter > 5){
-                    checkGameState();
-                }
-                if(counter > 9){
-                    displayResult('draw');
-                }
-            }            
-        });
-        
-        
-        
-    });
-}
-const checkGameState = () =>{
-    if(gameboard[0].value === 'X' && gameboard[1].value === 'X' && gameboard[2].value === 'X'
-       ||  gameboard[3].value === 'X' && gameboard[4].value === 'X' && gameboard[5].value === 'X'
-       ||  gameboard[6].value === 'X' && gameboard[7].value === 'X' && gameboard[8].value === 'X'
-       ||  gameboard[0].value === 'X' && gameboard[3].value === 'X' && gameboard[6].value === 'X'
-       ||  gameboard[1].value === 'X' && gameboard[4].value === 'X' && gameboard[7].value === 'X'
-       ||  gameboard[2].value === 'X' && gameboard[5].value === 'X' && gameboard[8].value === 'X'
-       ||  gameboard[2].value === 'X' && gameboard[4].value === 'X' && gameboard[6].value === 'X'
-       ||  gameboard[0].value === 'X' && gameboard[4].value === 'X' && gameboard[8].value === 'X'
+        } else if(gameboard[0].value === 'O' && gameboard[1].value === 'O' && gameboard[2].value === 'O'
+        ||  gameboard[3].value === 'O' && gameboard[4].value === 'O' && gameboard[5].value === 'O'
+         ||  gameboard[6].value === 'O' && gameboard[7].value === 'O' && gameboard[8].value === 'O'
+        ||  gameboard[0].value === 'O' && gameboard[3].value === 'O' && gameboard[6].value === 'O'
+        ||  gameboard[1].value === 'O' && gameboard[4].value === 'O' && gameboard[7].value === 'O'
+        ||  gameboard[2].value === 'O' && gameboard[5].value === 'O' && gameboard[8].value === 'O'
+        ||  gameboard[2].value === 'O' && gameboard[4].value === 'O' && gameboard[6].value === 'O'
+        ||  gameboard[0].value === 'O' && gameboard[4].value === 'O' && gameboard[8].value === 'O'
         ){
-        displayResult('playerOne');
-    } else if(gameboard[0].value === 'O' && gameboard[1].value === 'O' && gameboard[2].value === 'O'
-    ||  gameboard[3].value === 'O' && gameboard[4].value === 'O' && gameboard[5].value === 'O'
-    ||  gameboard[6].value === 'O' && gameboard[7].value === 'O' && gameboard[8].value === 'O'
-    ||  gameboard[0].value === 'O' && gameboard[3].value === 'O' && gameboard[6].value === 'O'
-    ||  gameboard[1].value === 'O' && gameboard[4].value === 'O' && gameboard[7].value === 'O'
-    ||  gameboard[2].value === 'O' && gameboard[5].value === 'O' && gameboard[8].value === 'O'
-    ||  gameboard[2].value === 'O' && gameboard[4].value === 'O' && gameboard[6].value === 'O'
-    ||  gameboard[0].value === 'O' && gameboard[4].value === 'O' && gameboard[8].value === 'O'
-     ){
-     displayResult('playerTwo');
- }
-};
-//display user's input
-const displayGame = function(){
-    let cellValues = gameboard.filter(cellValue => cellValue.value != '');
-    cellValues.forEach(cell => {
-        let cellId = cell.cellName;
-        document.querySelector(`#${cellId}`).textContent = cell.value;
-    });
+            displayController.displayResult('playerO');
+            
+        }
+        if(counter > 9){
+            displayController.displayResult('tie');
+            
+        }
+    };
+
+    const playAgain = (playAgainBtn,resultMsgBox) => {
+        playAgainBtn.addEventListener('click',(e) => {
+            resultMsgBox.style.display = 'none';
+            gameboard = board.createEmptyGameboard();
+            displayController.clearCells();
+            counter = 1;
+            gameOver = false;
+        });
+    };
     
-};
-
-const displayResult = (winner) =>{
-    gameStatus = 'over';
-    let resultMsgBox = document.createElement('div');
-    resultMsgBox.setAttribute('class','game-result');
-    setTimeout(function(){resultMsgBox.style.display = 'flex';},500);
-    let resultMsg = document.createElement('p');
-    resultMsgBox.appendChild(resultMsg);
-    if(winner === 'playerOne'){
-        resultMsg.textContent = 'Congratulations!!! Player One Won';
-    }else if(winner === 'playerTwo'){
-        resultMsg.textContent = 'Congratulations!!! Player Two Won';
-    }else{
-        resultMsg.textContent = 'It\'s A Tie';
-    }
-    document.querySelector('#container').appendChild(resultMsgBox);
-    let playAgainBtn = document.createElement('button');
-    playAgainBtn.setAttribute('class','button play-again');
-    playAgainBtn.textContent = 'Play Again'
-    resultMsgBox.appendChild(playAgainBtn);
-    playAgainBtn.addEventListener('click',(e)=> {
-        createEmptyBoard();
-        clearCells();
-        counter = 1;
-        gameStatus = 'not over';
-        resultMsgBox.style.display = 'none';
-    });
-};
-
-//clears textcontent of cells
-const clearCells = () => {
-    let emptyCells = document.querySelectorAll('.cell');
-    emptyCells.forEach(emptyCells =>{
-        emptyCells.textContent = '';
-    });
-};
-return {
-    // displayGame:displayGame,
-    playGame: playGame
-};
+    return {playGame, playAgain};
 })();
 
-// game.displayGame();
-// game.playGame();
 
 let startPage = (function(){
     let body = document.querySelector('body');
@@ -258,8 +182,7 @@ let startPage = (function(){
         welcomePage.style.display = 'none';
         grid.style.display = 'block';
         header.style.display = 'block';
-        game.playGame();
+        gameFlow.playGame();
     });
 }
 )();
- */

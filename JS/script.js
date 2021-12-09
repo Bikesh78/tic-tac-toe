@@ -1,4 +1,107 @@
-let game = (function(){
+
+const board = (() =>{
+    let gameboard =[];
+    const createEmptyGameboard= () => {
+        const Gameboard = function(cellName,value){
+            return {cellName, value};
+        };
+            gameboard = [];
+            for(let i =1; i <= 9;i++){
+                gameboard.push(Gameboard('cell' + i, ''));
+            }
+        
+        return gameboard;
+    };
+    createEmptyGameboard();
+    console.log(gameboard);
+    const getBoardArray= () => {
+        return gameboard;
+    };
+    const setValue = (boardIndex, currentPlayer) => {
+        //prevents setting value to an already filled cell
+        if(gameboard[boardIndex].value != '') return;
+        
+        gameboard[boardIndex].value = currentPlayer;
+        return gameboard[boardIndex].value;
+    };
+
+    return {createEmptyGameboard, setValue,getBoardArray};
+    })();
+
+board.createEmptyGameboard();
+
+const Player = (sign) =>{
+    return {sign};
+};
+
+const displayController =(() => {
+
+    const displayMoves = () =>{
+        let gameboard = board.getBoardArray();
+        let cellValues = gameboard.filter(cellValue => cellValue.value != '');
+        cellValues.forEach(cell => {
+            let cellId = cell.cellName;
+            document.querySelector(`#${cellId}`).textContent = cell.value;
+        });
+
+    };
+    
+    // createMsgBox();
+    
+    // displayresult = () => {
+    //     checkgamestate()
+    //     get player
+    //     if player x wins show player x wins
+        
+    // };
+    
+    // clearCells();
+    return {displayMoves};
+    })();
+
+
+const gameFlow = (() =>{
+    let gameOver = false;
+    let counter = 1;
+    let playerX = Player('X').sign;
+    let playerO = Player('O').sign;
+    let gameboard = board.getBoardArray();
+
+    const getBoardIndex = () =>{
+        let grid = document.querySelector('#grid');
+        clickedCell = grid.childNodes;
+        clickedCell.forEach(clicked => {
+            clicked.addEventListener('click',(e) =>{
+                
+                if(gameOver == true) return;
+                clickedCellId = e.target.getAttribute('id'); //get the id of the clicked div
+                
+                let boardIndex = gameboard.findIndex(gameboard => gameboard.cellName == clickedCellId);
+                if(board.setValue(boardIndex, currentPlayer()) == undefined) return;
+                displayController.displayMoves();
+                counter++;
+                console.log(counter);
+                console.log(currentPlayer());
+            });
+        });
+    };
+    const currentPlayer = () => {
+        if(counter % 2 !==0){
+            return playerX;
+        }else{
+            return playerO;
+        }
+    };
+
+    
+    return {getBoardIndex};
+})();
+
+gameFlow.getBoardIndex();
+
+
+
+/* let game = (function(){
 const Gameboard = function(cellName,value){
     return {cellName,value};
 };
@@ -36,14 +139,14 @@ const playGame = function(){
             
             //only accepts input when the cell is empty
             if(gameboard[gameboardIndex].value == ''){
-                //if counter is odd player one's turn else player two's turn
                 if(counter % 2 !==0){
                     PlayerOne(gameboardIndex);
                 }else{
                     PlayerTwo(gameboardIndex);
                 }
                 counter++;
-                displayGame();
+                displayGame();                //if counter is odd player one's turn else player two's turn
+
                 if(counter > 5){
                     checkGameState();
                 }
@@ -159,3 +262,4 @@ let startPage = (function(){
     });
 }
 )();
+ */
